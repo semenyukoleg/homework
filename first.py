@@ -1,47 +1,123 @@
-x = 1
-y = 2
-z = 5
+from random import randrange
+import time
+from datetime import datetime
 
-if z <= 1 :
-    print("Hey")
-else:
-    print("Ho")
-    
-def bubble_sort(nums):  
-    swapped = True
-    while swapped:
-        swapped = False
-        for i in range(len(nums) - 1):
-            if nums[i] > nums[i + 1]:
-                nums[i], nums[i + 1] = nums[i + 1], nums[i]
-                swapped = True
+# Python program for implementation of MergeSort 
+def mergeSort(arr): 
+    if len(arr) >1: 
+        mid = len(arr)//2 
+        L = arr[:mid]   
+        R = arr[mid:] 
+  
+        mergeSort(L) 
+        mergeSort(R) 
+  
+        i = j = k = 0
+          
 
-def insertion_sort(nums):  
-    for i in range(1, len(nums)):
-        item_to_insert = nums[i]
-        j = i - 1
-        while j >= 0 and nums[j] > item_to_insert:
-            nums[j + 1] = nums[j]
-            j -= 1
-        nums[j + 1] = item_to_insert
+        while i < len(L) and j < len(R): 
+            if L[i] < R[j]: 
+                arr[k] = L[i] 
+                i+=1
+            else: 
+                arr[k] = R[j] 
+                j+=1
+            k+=1
+          
+        while i < len(L): 
+            arr[k] = L[i] 
+            i+=1
+            k+=1
+          
+        while j < len(R): 
+            arr[k] = R[j] 
+            j+=1
+            k+=1
 
-def selection_sort(nums):  
-    for i in range(len(nums)):
-        lowest_value_index = i
-        for j in range(i + 1, len(nums)):
-            if nums[j] < nums[lowest_value_index]:
-                lowest_value_index = j
-        nums[i], nums[lowest_value_index] = nums[lowest_value_index], nums[i]
+def partition(arr,low,high): 
+    i = ( low-1 )        
+    pivot = arr[high]     
+  
+    for j in range(low , high): 
+  
+        if   arr[j] < pivot: 
+           
+            i = i+1 
+            arr[i],arr[j] = arr[j],arr[i] 
+  
+    arr[i+1],arr[high] = arr[high],arr[i+1] 
+    return ( i+1 ) 
 
 
-array1 = [720, 745, 379, 557, 61, 512, 739, 867, 597, 630, 312, 268, 768, 880, 443]
-bubble_sort(array1)
-print("Bubble Sort: " + str(array1) + "\n")
+# Python program for implementation of Quicksort Sort 
 
-array2 = [888, 235, 598, 741, 956, 255, 72, 406, 261, 451, 20, 703, 910, 867, 964]
-insertion_sort(array2)
-print("Insertion Sort: " + str(array2) + "\n")
+def quickSort(arr,low,high): 
+    if low < high: 
+  
+        # pi is partitioning index, arr[p] is now 
+        # at right place 
+        pi = partition(arr,low,high) 
+  
+        quickSort(arr, low, pi-1) 
+        quickSort(arr, pi+1, high) 
 
-array3 = [703, 153, 694, 977, 575, 864, 780, 991, 187, 641, 346, 521, 713, 457, 767]
-selection_sort(array3)
-print("Selection Sort: " + str(array3) + "\n") 
+# Python program for implementation of heap Sort 
+  
+def heapify(arr, n, i): 
+    largest = i 
+    l = 2 * i + 1     
+    r = 2 * i + 2     
+  
+    if l < n and arr[i] < arr[l]: 
+        largest = l 
+  
+    if r < n and arr[largest] < arr[r]: 
+        largest = r 
+   
+    if largest != i: 
+        arr[i],arr[largest] = arr[largest],arr[i]  
+   
+        heapify(arr, n, largest) 
+   
+def heapSort(arr): 
+    n = len(arr) 
+  
+    for i in range(n, -1, -1): 
+        heapify(arr, n, i) 
+  
+    for i in range(n-1, 0, -1): 
+        arr[i], arr[0] = arr[0], arr[i]  
+        heapify(arr, i, 0) 
+
+f = open(r"C:\Users\igor\source\repos\PythonApplication2\PythonApplication2\ai182.txt", "r")
+f.seek(248)
+s = f.read(15)
+task_array = [int (s[i]) for i in range (0, 15)]
+
+from datetime import datetime
+#Merge sort
+#Average duration: 0:00:00.001095
+arr = task_array
+start_time = datetime.now()
+merge_sort(arr)
+end_time = datetime.now()
+print("Merge sort: " + str(arr) + "\n" + 'Duration: {}'.format(end_time - start_time) + "\n")
+
+#Quick sort
+#Average duration: 0:00:00.001095
+arr = task_array
+start_time = datetime.now()
+quick_sort(arr, 0, len(arr) - 1)
+end_time = datetime.now()
+print("Quick sort: " + str(arr) + "\n" + 'Duration: {}'.format(end_time - start_time) + "\n")
+
+#Heap sort
+#Average duration: 0:00:00.000750
+arr = task_array
+start_time = datetime.now()
+heap_sort(arr)
+end_time = datetime.now()
+print("Heap sort: " + str(arr) + "\n" + 'Duration: {}'.format(end_time - start_time) + "\n") 
+
+# Conclusion: all three sorts are pretty fast, compering them to n^2 sorts algorithms, heap gave the best result
+
